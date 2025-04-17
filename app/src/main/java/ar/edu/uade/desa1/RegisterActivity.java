@@ -5,9 +5,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import javax.inject.Inject;
 
-public class RegisterActivity extends AppCompatActivity {
+import ar.edu.uade.desa1.domain.request.AuthRegisterRequest;
+import ar.edu.uade.desa1.domain.response.AuthRegisterResponse;
+import ar.edu.uade.desa1.repository.AuthRepository;
+
+public class RegisterActivity extends BaseActivity {
 
     private EditText edtFirstName, edtLastName, edtDni, edtPhone, edtEmail, edtPassword;
     private Button btnRegister;
@@ -17,7 +21,20 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setTitle("Registro de Usuario");
+        
+        // No necesitamos verificar la sesión en la pantalla de registro
+        setSkipSessionCheck(true);
 
+        initViews();
+        setupListeners();
+    }
+    
+    @Override
+    protected boolean requiresAuth() {
+        return false;
+    }
+
+    private void initViews() {
         edtFirstName = findViewById(R.id.edtFirstName);
         edtLastName = findViewById(R.id.edtLastName);
         edtDni = findViewById(R.id.edtDni);
