@@ -1,5 +1,6 @@
 package ar.edu.uade.desa1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -76,8 +77,15 @@ public class OtpActivity extends AppCompatActivity {
                     otpInputLayout.setError(null);
                     tvOtpInstruction.setText("¡OTP verificado correctamente!");
                     tvOtpInstruction.setTextColor(getColor(R.color.purple_500));
-                    finish();
-                } else {
+
+                    // Redirigir a la pantalla principal
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        Intent intent = new Intent(OtpActivity.this, RoutesActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }, 1500); // Delay opcional para que vea el mensaje
+            } else {
                     showOtpError(response.getMessage());
                 }
             }
