@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
-
+        git checkout feature/login-screen
         Button loginButton = findViewById(R.id.buttonLogin);
         EditText emailInput = findViewById(R.id.editTextEmail);
         EditText passwordInput = findViewById(R.id.editTextPassword);
