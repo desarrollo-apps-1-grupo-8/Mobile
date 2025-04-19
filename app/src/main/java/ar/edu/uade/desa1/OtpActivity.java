@@ -1,5 +1,6 @@
 package ar.edu.uade.desa1;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -86,6 +87,7 @@ public class OtpActivity extends AppCompatActivity {
                         finish();
                     }, 1500); // Delay opcional para que vea el mensaje
             } else {
+
                     showOtpError(response.getMessage());
                 }
             }

@@ -32,6 +32,9 @@ public class HistoryActivity extends AppCompatActivity {
 
     @Inject
     RoutesApiService routesApiService;
+    @Inject
+    AuthRouteHandler authRouteHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,13 @@ public class HistoryActivity extends AppCompatActivity {
         title.setText(route.getPackageInfo());
         title.setTypeface(null, Typeface.BOLD);
         title.setTextSize(16);
+      
+        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) { //
+            return;
+        }
+
+        ConstraintLayout layout = new ConstraintLayout(this);
+        layout.setId(ConstraintLayout.generateViewId());
 
         // Subtítulo
         TextView subtitle = new TextView(this);

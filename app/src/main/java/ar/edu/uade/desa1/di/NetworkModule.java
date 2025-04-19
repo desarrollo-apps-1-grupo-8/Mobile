@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import ar.edu.uade.desa1.api.AuthApiService;
 import ar.edu.uade.desa1.api.RoutesApiService;
+import ar.edu.uade.desa1.api.interceptor.AuthInterceptor;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -21,12 +22,13 @@ public class NetworkModule {
     
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient() {
+    public OkHttpClient provideOkHttpClient(AuthInterceptor authInterceptor) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         
         return new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(authInterceptor)
                 .build();
     }
     

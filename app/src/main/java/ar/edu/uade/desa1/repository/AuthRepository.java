@@ -4,13 +4,17 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ar.edu.uade.desa1.api.AuthApiService;
+import ar.edu.uade.desa1.domain.request.AuthLoginRequest;
 import ar.edu.uade.desa1.domain.request.AuthRegisterRequest;
 import ar.edu.uade.desa1.domain.request.VerifyEmailRequest;
 import ar.edu.uade.desa1.domain.response.AuthRegisterResponse;
 import ar.edu.uade.desa1.domain.response.VerifyEmailResponse;
+import ar.edu.uade.desa1.service.AuthService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ar.edu.uade.desa1.api.AuthApiService;
+import ar.edu.uade.desa1.domain.response.AuthResponse;
 
 @Singleton
 public class AuthRepository {
@@ -67,4 +71,27 @@ public class AuthRepository {
         void onSuccess(VerifyEmailResponse response);
         void onError(String errorMessage);
     }
+
+    //Login
+    @Inject
+    AuthApiService authService;
+    public void login(AuthLoginRequest request, AuthResultCallback callback) {
+
+        authService.login(request).enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResult(response.body());
+                } else {
+                    callback.onResult(new AuthResponse(false, null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                callback.onResult(new AuthResponse(false, null));
+            }
+        });
+    }
+
 } 
