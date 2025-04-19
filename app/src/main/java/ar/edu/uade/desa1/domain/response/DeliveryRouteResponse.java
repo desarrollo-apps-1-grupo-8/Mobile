@@ -12,7 +12,7 @@ public class DeliveryRouteResponse {
     private String packageInfo;
     private String origin;
     private String destination;
-    private String status;
+    private String status; // RouteStatus como String desde el backend
     private Long userId;
     private Long deliveryUserId;
 }
