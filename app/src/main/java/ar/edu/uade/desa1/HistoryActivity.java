@@ -18,6 +18,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ar.edu.uade.desa1.api.RoutesApiService;
+import ar.edu.uade.desa1.domain.RouteStatusEnum;
 import ar.edu.uade.desa1.domain.response.DeliveryRouteResponse;
 import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
@@ -85,7 +86,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         // Estado
         TextView status = new TextView(this);
-        status.setText(route.getStatus());
+        status.setText(RouteStatusEnum.valueOf(route.getStatus()).getSpanishStatus());
         status.setGravity(Gravity.END);
         status.setTypeface(null, Typeface.ITALIC);
 
