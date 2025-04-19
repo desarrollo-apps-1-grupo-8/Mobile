@@ -3,6 +3,7 @@ package ar.edu.uade.desa1.di;
 import javax.inject.Singleton;
 
 import ar.edu.uade.desa1.api.AuthApiService;
+import ar.edu.uade.desa1.api.RoutesApiService;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -43,5 +44,11 @@ public class NetworkModule {
     @Singleton
     public AuthApiService provideAuthApiService(Retrofit retrofit) {
         return retrofit.create(AuthApiService.class);
+    }
+
+    @Provides
+    @Singleton
+    public RoutesApiService provideRoutesApiService(Retrofit retrofit) {
+        return retrofit.create(RoutesApiService.class);
     }
 } 
