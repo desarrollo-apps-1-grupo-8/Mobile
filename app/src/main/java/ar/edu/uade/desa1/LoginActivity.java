@@ -59,7 +59,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         });
+
+        //Redireccion al Register
+        TextView registerLink = findViewById(R.id.textRegisterLink);
+        registerLink.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
     }
-
-
 }
