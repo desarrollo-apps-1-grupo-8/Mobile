@@ -8,9 +8,17 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 public class HistoryActivity extends AppCompatActivity {
 
+    @Inject
+    AuthRouteHandler authRouteHandler;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) { //
+            return;
+        }
 
         ConstraintLayout layout = new ConstraintLayout(this);
         layout.setId(ConstraintLayout.generateViewId());

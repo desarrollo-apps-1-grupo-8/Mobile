@@ -57,4 +57,7 @@ dependencies {
     // Lombok for Java (optional, since you're using it in your model)
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    
+    // Security para encriptación de tokens
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
 }

@@ -7,11 +7,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import javax.inject.Inject;
+
+import ar.edu.uade.desa1.util.AuthRouteHandler;
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class RoutesActivity extends AppCompatActivity {
+
+    @Inject
+    AuthRouteHandler authRouteHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+       
+        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) { //
+            return;
+        }
 
         ConstraintLayout layout = new ConstraintLayout(this);
         layout.setId(ConstraintLayout.generateViewId());

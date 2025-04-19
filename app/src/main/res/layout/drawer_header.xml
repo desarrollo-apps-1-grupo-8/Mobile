@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/teal_700"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/user_image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="start|center_horizontal"
+        android:contentDescription="Foto del usuario"
+        android:scaleType="center"
+        android:src="@drawable/ic_check" /> <!-- ic_user_image aca va la imagen de usuario-->
+
+    <TextView
+        android:id="@+id/username_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Nombre del usuario"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+</LinearLayout>
