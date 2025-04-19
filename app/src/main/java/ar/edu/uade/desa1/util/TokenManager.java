@@ -31,18 +31,21 @@ public class TokenManager {
     @Inject
     public TokenManager(Context context) {
         try {
-            MasterKey masterKey = new MasterKey.Builder(context)
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                    .setKeyGenParameterSpec(
-                            new KeyGenParameterSpec.Builder(
-                                    "_token_manager_master_key_",
-                                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                                    .setKeySize(256)
-                                    .build())
+            String alias = "_token_manager_master_key_";
+
+            KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
+                    alias,
+                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                    .setKeySize(256)
                     .build();
-            
+
+            MasterKey masterKey = new MasterKey.Builder(context, alias)
+                    .setKeyGenParameterSpec(spec)
+                    .build();
+
+
             this.encryptedPrefs = EncryptedSharedPreferences.create(
                     context,
                     PREF_FILE_NAME,

@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import ar.edu.uade.desa1.domain.request.AuthLoginRequest;
 import ar.edu.uade.desa1.repository.AuthRepository;
+import ar.edu.uade.desa1.util.TokenManager;
 import dagger.hilt.android.AndroidEntryPoint;
 
 
@@ -28,6 +29,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class LoginActivity extends AppCompatActivity {
     @Inject
     AuthRepository authRepository;
+
+    @Inject
+    TokenManager tokenManager;
 
     //login con Retrofit
     @Override
@@ -48,10 +52,11 @@ public class LoginActivity extends AppCompatActivity {
             authRepository.login(request, result -> {
                 if (result.isSuccess()) {
                     String token = result.getToken();
-                    SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                    prefs.edit().putString("jwt_token", token).apply();
+
+                    tokenManager.saveToken(token);
 
                     Toast.makeText(this, "¡Login exitoso!", Toast.LENGTH_SHORT).show();
+
                     startActivity(new Intent(LoginActivity.this, RoutesActivity.class)); //Redireccion a Routes Activity
                     finish();
                 } else {

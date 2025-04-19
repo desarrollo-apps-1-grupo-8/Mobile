@@ -23,7 +23,7 @@ public class RoutesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
        
-        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) { //
+        if (!authRouteHandler.checkAuthentication(this, RegisterActivity.class)) { //
             return;
         }
 

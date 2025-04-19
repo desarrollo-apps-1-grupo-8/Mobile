@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import javax.inject.Inject;
+
+import ar.edu.uade.desa1.util.AuthRouteHandler;
+
 public class HistoryActivity extends AppCompatActivity {
 
     @Inject
