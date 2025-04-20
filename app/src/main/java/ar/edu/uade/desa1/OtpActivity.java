@@ -81,7 +81,7 @@ public class OtpActivity extends AppCompatActivity {
 
                     // Redirigir a la pantalla principal
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        Intent intent = new Intent(OtpActivity.this, RoutesActivity.class);
+                        Intent intent = new Intent(OtpActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
