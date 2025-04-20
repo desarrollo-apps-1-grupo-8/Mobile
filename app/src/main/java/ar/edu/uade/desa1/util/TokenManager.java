@@ -13,6 +13,9 @@ import java.security.GeneralSecurityException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * Clase encargada del manejo seguro de tokens de autenticación utilizando EncryptedSharedPreferences
+ */
 @Singleton
 public class TokenManager {
 
@@ -26,8 +29,18 @@ public class TokenManager {
     @Inject
     public TokenManager(Context context) {
         try {
-            MasterKey masterKey = new MasterKey.Builder(context)
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM) // Solo usa setKeyScheme
+            String alias = "_token_manager_master_key_";
+
+            KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
+                    alias,
+                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                    .setKeySize(256)
+                    .build();
+
+            MasterKey masterKey = new MasterKey.Builder(context, alias)
+                    .setKeyGenParameterSpec(spec)
                     .build();
 
             this.encryptedPrefs = EncryptedSharedPreferences.create(

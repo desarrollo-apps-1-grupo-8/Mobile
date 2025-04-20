@@ -34,12 +34,18 @@ public class HistoryActivity extends AppCompatActivity {
 
     @Inject
     RoutesApiService routesApiService;
+
     @Inject
     AuthRouteHandler authRouteHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) { //
+            return;
+        }
+
         setContentView(R.layout.activity_history);
 
         routesContainer = findViewById(R.id.routesContainer);
@@ -98,9 +104,6 @@ public class HistoryActivity extends AppCompatActivity {
         status.setText(statusEnum.getSpanishStatus());
         status.setGravity(Gravity.END);
         status.setTypeface(null, Typeface.ITALIC);
-
-
-
 
         // Footer
         TextView footer = new TextView(this);

@@ -40,7 +40,7 @@ public class RoutesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) {
+        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) { //
             return;
         }
 
@@ -162,4 +162,3 @@ public class RoutesActivity extends AppCompatActivity {
         setContentView(layout);
     }
 }
-
