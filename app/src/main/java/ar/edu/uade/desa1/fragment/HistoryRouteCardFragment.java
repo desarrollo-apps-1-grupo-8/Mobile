@@ -33,7 +33,7 @@ public class HistoryRouteCardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_route_card, container, false);
+        View view = inflater.inflate(R.layout.fragment_history_route_card, container, false);
 
         String packageInfo = getArguments().getString(ARG_PACKAGE);
         String origin = getArguments().getString(ARG_ORIGIN);
