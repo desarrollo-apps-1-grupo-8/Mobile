@@ -1,11 +1,8 @@
 package ar.edu.uade.desa1;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,17 +10,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.card.MaterialCardView;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
 import ar.edu.uade.desa1.api.RoutesApiService;
-import ar.edu.uade.desa1.domain.RouteStatusEnum;
 import ar.edu.uade.desa1.domain.response.DeliveryRouteResponse;
-import ar.edu.uade.desa1.fragment.RouteCardFragment;
+import ar.edu.uade.desa1.fragment.HistoryRouteCardFragment;
 import ar.edu.uade.desa1.util.AuthRouteHandler;
+import ar.edu.uade.desa1.util.TokenManager;
 import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +35,9 @@ public class HistoryActivity extends AppCompatActivity {
     @Inject
     AuthRouteHandler authRouteHandler;
 
+    @Inject
+    TokenManager tokenManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +50,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         routesContainer = findViewById(R.id.routesContainer);
 
-        long userId = 1L; // reemplacelo con el real cuando lo tengas
+        long userId =  tokenManager.getUserIdFromToken();
 
         routesApiService.getCompletedRoutesByUserId(userId)
                 .enqueue(new Callback<List<DeliveryRouteResponse>>() {
@@ -85,7 +83,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void addRouteCard(DeliveryRouteResponse route) {
-        Fragment fragment = RouteCardFragment.newInstance(route);
+        Fragment fragment = HistoryRouteCardFragment.newInstance(route);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.routesContainer, fragment)

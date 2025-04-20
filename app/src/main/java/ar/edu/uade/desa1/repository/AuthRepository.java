@@ -9,11 +9,9 @@ import ar.edu.uade.desa1.domain.request.AuthRegisterRequest;
 import ar.edu.uade.desa1.domain.request.VerifyEmailRequest;
 import ar.edu.uade.desa1.domain.response.AuthRegisterResponse;
 import ar.edu.uade.desa1.domain.response.VerifyEmailResponse;
-import ar.edu.uade.desa1.service.AuthService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ar.edu.uade.desa1.api.AuthApiService;
 import ar.edu.uade.desa1.domain.response.AuthResponse;
 
 @Singleton

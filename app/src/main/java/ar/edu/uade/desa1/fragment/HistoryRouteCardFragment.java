@@ -12,15 +12,15 @@ import ar.edu.uade.desa1.R;
 import ar.edu.uade.desa1.domain.RouteStatusEnum;
 import ar.edu.uade.desa1.domain.response.DeliveryRouteResponse;
 
-public class RouteCardFragment extends Fragment {
+public class HistoryRouteCardFragment extends Fragment {
 
     private static final String ARG_PACKAGE = "packageInfo";
     private static final String ARG_ORIGIN = "origin";
     private static final String ARG_DESTINATION = "destination";
     private static final String ARG_STATUS = "status";
 
-    public static RouteCardFragment newInstance(DeliveryRouteResponse route) {
-        RouteCardFragment fragment = new RouteCardFragment();
+    public static HistoryRouteCardFragment newInstance(DeliveryRouteResponse route) {
+        HistoryRouteCardFragment fragment = new HistoryRouteCardFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PACKAGE, route.getPackageInfo());
         args.putString(ARG_ORIGIN, route.getOrigin());
