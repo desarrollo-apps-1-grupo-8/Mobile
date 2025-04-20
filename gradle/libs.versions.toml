@@ -14,6 +14,6 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
-android-application = { id = "com.android.application", version= "8.4.0" }
+android-application = { id = "com.android.application", version= "8.9.1" }
 
 

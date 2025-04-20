@@ -1,4 +1,4 @@
-package ar.edu.uade.desa1.domain.response;
+package ar.edu.uade.desa1.domain.request;
 
 import ar.edu.uade.desa1.domain.RouteStatusEnum;
 import lombok.AllArgsConstructor;
@@ -8,12 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeliveryRouteResponse {
-    private Long id;
+public class CreateRouteRequest {
     private String packageInfo;
     private String origin;
     private String destination;
     private RouteStatusEnum status;
     private Long userId;
-    private Long deliveryUserId;
 }

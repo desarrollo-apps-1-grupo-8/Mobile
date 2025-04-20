@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.card.MaterialCardView;
 
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 import ar.edu.uade.desa1.api.RoutesApiService;
 import ar.edu.uade.desa1.domain.RouteStatusEnum;
 import ar.edu.uade.desa1.domain.response.DeliveryRouteResponse;
+import ar.edu.uade.desa1.util.AuthRouteHandler;
 import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +36,6 @@ public class HistoryActivity extends AppCompatActivity {
     RoutesApiService routesApiService;
     @Inject
     AuthRouteHandler authRouteHandler;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,22 +73,19 @@ public class HistoryActivity extends AppCompatActivity {
         card.setRadius(16f);
         card.setUseCompatPadding(true);
 
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(24, 24, 24, 24);
+        LinearLayout cardLayout = new LinearLayout(this);
+        cardLayout.setOrientation(LinearLayout.VERTICAL);
+        cardLayout.setPadding(24, 24, 24, 24);
 
         // Título
         TextView title = new TextView(this);
         title.setText(route.getPackageInfo());
         title.setTypeface(null, Typeface.BOLD);
         title.setTextSize(16);
-      
-        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) { //
+
+        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) {
             return;
         }
-
-        ConstraintLayout layout = new ConstraintLayout(this);
-        layout.setId(ConstraintLayout.generateViewId());
 
         // Subtítulo
         TextView subtitle = new TextView(this);
@@ -96,21 +94,25 @@ public class HistoryActivity extends AppCompatActivity {
 
         // Estado
         TextView status = new TextView(this);
-        status.setText(RouteStatusEnum.valueOf(route.getStatus()).getSpanishStatus());
+        RouteStatusEnum statusEnum = RouteStatusEnum.valueOf(route.getStatus().name());
+        status.setText(statusEnum.getSpanishStatus());
         status.setGravity(Gravity.END);
         status.setTypeface(null, Typeface.ITALIC);
+
+
+
 
         // Footer
         TextView footer = new TextView(this);
         footer.setText("Cliente: (sin datos)   Fecha: (sin datos)");
         footer.setTextSize(12);
 
-        layout.addView(title);
-        layout.addView(subtitle);
-        layout.addView(status);
-        layout.addView(footer);
+        cardLayout.addView(title);
+        cardLayout.addView(subtitle);
+        cardLayout.addView(status);
+        cardLayout.addView(footer);
 
-        card.addView(layout, new ViewGroup.LayoutParams(
+        card.addView(cardLayout, new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));

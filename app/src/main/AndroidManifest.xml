@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity android:name=".OtpActivity" />
-        <activity android:name=".MainActivity"
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
