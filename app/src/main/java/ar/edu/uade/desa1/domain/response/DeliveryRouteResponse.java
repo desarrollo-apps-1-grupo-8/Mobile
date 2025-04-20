@@ -1,6 +1,5 @@
 package ar.edu.uade.desa1.domain.response;
 
-import ar.edu.uade.desa1.domain.RouteStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ public class DeliveryRouteResponse {
     private String packageInfo;
     private String origin;
     private String destination;
-    private RouteStatusEnum status;
+    private String status;
     private Long userId;
     private Long deliveryUserId;
 }
