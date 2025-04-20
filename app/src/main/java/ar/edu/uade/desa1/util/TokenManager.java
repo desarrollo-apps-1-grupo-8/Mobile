@@ -2,10 +2,14 @@ package ar.edu.uade.desa1.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
 import android.util.Log;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -43,6 +47,7 @@ public class TokenManager {
                     .setKeyGenParameterSpec(spec)
                     .build();
 
+
             this.encryptedPrefs = EncryptedSharedPreferences.create(
                     context,
                     PREF_FILE_NAME,
@@ -55,6 +60,29 @@ public class TokenManager {
             throw new RuntimeException("Error al inicializar el TokenManager", e);
         }
     }
+
+    public Long getUserIdFromToken() {
+        try {
+            String token = getAccessToken();
+            if (token == null) return null;
+
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+
+            String[] parts = token.split("\\.");
+            if (parts.length != 3) return null;
+
+            String payload = new String(android.util.Base64.decode(parts[1], android.util.Base64.URL_SAFE));
+            JSONObject json = new JSONObject(payload);
+
+            return json.getLong("id");
+        } catch (Exception e) {
+            Log.e(TAG, "Error al obtener ID del token: " + e.getMessage());
+            return null;
+        }
+    }
+
 
     public void saveToken(String accessToken, long expiryTimeInMillis) {
         encryptedPrefs.edit()
@@ -89,4 +117,4 @@ public class TokenManager {
         String accessToken = getAccessToken();
         return accessToken != null ? "Bearer " + accessToken : null;
     }
-} 
+}
