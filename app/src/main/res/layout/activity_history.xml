@@ -16,17 +16,34 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="12dp">
 
         <LinearLayout
-            android:id="@+id/routesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:divider="?android:attr/dividerHorizontal"
-            android:showDividers="middle"
-            android:dividerPadding="8dp" />
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/noRoutesText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No tenés rutas finalizadas actualmente"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:textColor="@android:color/darker_gray"
+                android:padding="32dp" />
+
+            <LinearLayout
+                android:id="@+id/routesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:divider="?android:attr/dividerHorizontal"
+                android:showDividers="middle"
+                android:dividerPadding="8dp" />
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>
