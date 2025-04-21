@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText edtFirstName, edtLastName, edtDni, edtPhone, edtEmail, edtPassword;
+    private EditText edtFirstName, edtLastName, edtDni, edtPhone, edtEmail, edtPassword, edtConfirmPassword;
     private Button btnRegister;
     private ProgressBar progressBar;
 
@@ -48,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         btnRegister = findViewById(R.id.btnRegister);
         progressBar = findViewById(R.id.progressBar);
+        edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
     }
 
     private void setupListeners() {
@@ -65,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
         String phone = edtPhone.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString();
+        String confirmPassword = edtConfirmPassword.getText().toString();
 
         if (firstName.isEmpty()) {
             edtFirstName.setError("Ingrese su nombre");
@@ -88,6 +90,11 @@ public class RegisterActivity extends AppCompatActivity {
         }
         if (password.isEmpty() || password.length() < 6) {
             edtPassword.setError("La contraseña debe tener al menos 6 caracteres");
+            return false;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            edtConfirmPassword.setError("Las contraseñas no coinciden");
             return false;
         }
 
