@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 import ar.edu.uade.desa1.api.RoutesApiService;
 import ar.edu.uade.desa1.domain.response.DeliveryRouteResponse;
+import ar.edu.uade.desa1.domain.response.DeliveryRouteResponseWithUserInfo;
 import ar.edu.uade.desa1.fragment.HistoryRouteCardFragment;
 import ar.edu.uade.desa1.util.AuthRouteHandler;
 import ar.edu.uade.desa1.util.TokenManager;
@@ -53,36 +54,34 @@ public class HistoryActivity extends AppCompatActivity {
         long userId =  tokenManager.getUserIdFromToken();
 
         routesApiService.getCompletedRoutesByUserId(userId)
-                .enqueue(new Callback<List<DeliveryRouteResponse>>() {
+                .enqueue(new Callback<List<DeliveryRouteResponseWithUserInfo>>() {
                     @Override
-                    public void onResponse(Call<List<DeliveryRouteResponse>> call, Response<List<DeliveryRouteResponse>> response) {
+                    public void onResponse(Call<List<DeliveryRouteResponseWithUserInfo>> call, Response<List<DeliveryRouteResponseWithUserInfo>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             TextView noRoutesText = findViewById(R.id.noRoutesText);
-                            List<DeliveryRouteResponse> rutas = response.body();
+                            List<DeliveryRouteResponseWithUserInfo> rutas = response.body();
 
                             if (rutas.isEmpty()) {
                                 noRoutesText.setVisibility(View.VISIBLE);
                             } else {
                                 noRoutesText.setVisibility(View.GONE);
-                                for (DeliveryRouteResponse route : rutas) {
+                                for (DeliveryRouteResponseWithUserInfo route : rutas) {
                                     addRouteCard(route);
                                 }
                             }
 
-                        } else {
-                            Toast.makeText(HistoryActivity.this, "Error al obtener rutas", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<DeliveryRouteResponse>> call, Throwable t) {
+                    public void onFailure(Call<List<DeliveryRouteResponseWithUserInfo>> call, Throwable t) {
                         Log.e("HistoryActivity", "Error en Retrofit", t);
                         Toast.makeText(HistoryActivity.this, "Fallo al conectar con el servidor", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void addRouteCard(DeliveryRouteResponse route) {
+    private void addRouteCard(DeliveryRouteResponseWithUserInfo route) {
         Fragment fragment = HistoryRouteCardFragment.newInstance(route);
         getSupportFragmentManager()
                 .beginTransaction()
