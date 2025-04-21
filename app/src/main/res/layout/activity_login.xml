@@ -48,8 +48,20 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"/>
 
-    <!-- Es un texto pero clickeable. -->
+    <!-- boton de recuperar contraseñia. -->
     <TextView
+        android:id="@+id/forgot_password_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Perdiste la contraseña?"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/buttonLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!--TextView
         android:id="@+id/textForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,7 +71,7 @@
         app:layout_constraintTop_toBottomOf="@id/buttonLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"/ -->
 
 
     <TextView
@@ -69,7 +81,7 @@
         android:text="¿Sos nuevo? Registrate"
         android:textColor="@android:color/holo_blue_dark"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/textForgotPassword"
+        app:layout_constraintTop_toBottomOf="@id/forgot_password_link"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>

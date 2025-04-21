@@ -26,7 +26,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 
 @AndroidEntryPoint
-public class LoginActivity extends AppCompatActivity {
+public class
+LoginActivity extends AppCompatActivity {
     @Inject
     AuthRepository authRepository;
 
@@ -69,6 +70,13 @@ public class LoginActivity extends AppCompatActivity {
         TextView registerLink = findViewById(R.id.textRegisterLink);
         registerLink.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
+        //Redireccion a recuperar contraseñia
+        TextView forgotPassword = findViewById(R.id.forgot_password_link);
+        forgotPassword.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
         });
     }
