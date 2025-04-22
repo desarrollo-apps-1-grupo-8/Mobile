@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,14 +23,14 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class TokenManager {
-    
+
     private static final String TAG = "TokenManager";
     private static final String PREF_FILE_NAME = "secure_token_prefs";
     private static final String KEY_ACCESS_TOKEN = "access_token";
     private static final String KEY_EXPIRY_TIME = "expiry_time";
-    
+
     private final SharedPreferences encryptedPrefs;
-    
+
     @Inject
     public TokenManager(Context context) {
         try {
@@ -58,6 +59,28 @@ public class TokenManager {
         } catch (GeneralSecurityException | IOException e) {
             Log.e(TAG, "Error al inicializar EncryptedSharedPreferences: " + e.getMessage());
             throw new RuntimeException("Error al inicializar el TokenManager", e);
+        }
+    }
+
+    public String getUserRoleFromToken() {
+        try {
+            String token = getAccessToken();
+            if (token == null) return null;
+
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+
+            String[] parts = token.split("\\.");
+            if (parts.length != 3) return null;
+
+            String payload = new String(android.util.Base64.decode(parts[1], android.util.Base64.URL_SAFE));
+            JSONObject json = new JSONObject(payload);
+            System.out.println(json.toString());
+            return json.getString("role");
+        } catch (Exception e) {
+            Log.e(TAG, "Error al obtener rol del token: " + e.getMessage());
+            return null;
         }
     }
 
@@ -117,4 +140,4 @@ public class TokenManager {
         String accessToken = getAccessToken();
         return accessToken != null ? "Bearer " + accessToken : null;
     }
-} 
+}

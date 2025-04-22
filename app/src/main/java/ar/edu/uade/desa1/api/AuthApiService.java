@@ -8,7 +8,8 @@ import ar.edu.uade.desa1.domain.request.VerifyCodeRequest;
 import ar.edu.uade.desa1.domain.response.AuthRegisterResponse;
 import ar.edu.uade.desa1.domain.response.AuthResponse;
 
-import ar.edu.uade.desa1.domain.response.VerifyEmailResponse;
+import ar.edu.uade.desa1.domain.response.SendVerificationCodeResponse;
+import ar.edu.uade.desa1.domain.response.VerifyCodeResponse;
 import ar.edu.uade.desa1.domain.request.PasswordRecoveryRequest;
 
 import retrofit2.Call;

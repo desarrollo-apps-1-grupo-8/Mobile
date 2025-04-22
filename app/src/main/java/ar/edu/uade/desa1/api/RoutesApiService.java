@@ -12,4 +12,16 @@ public interface RoutesApiService {
 
     @GET("/api/v1/routes/history/{userId}")
     Call<List<DeliveryRouteResponseWithUserInfo>> getCompletedRoutesByUserId(@Path("userId") long userId);
+
+//    @POST("/api/v1/routes/update-status")
+//    Call<DeliveryRouteResponse> updateRouteStatus(@Body UpdateRouteStatusRequest request);
+
+    @GET("/api/v1/routes")
+    Call<List<DeliveryRouteResponseWithUserInfo>> getAllRoutes();
+
+    @GET("/api/v1/routes/{id}")
+    Call<DeliveryRouteResponse> getRouteById(@Path("id") long routeId);
+
+    @GET("/api/v1/routes/user/{userId}")
+    Call<List<DeliveryRouteResponseWithUserInfo>> getRoutesByUserId(@Path("userId") long userId);
 }

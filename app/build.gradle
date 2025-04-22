@@ -41,6 +41,9 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     
+    // SwipeRefreshLayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    
     // Hilt
     implementation 'com.google.dagger:hilt-android:2.48'
     annotationProcessor 'com.google.dagger:hilt-compiler:2.48'
