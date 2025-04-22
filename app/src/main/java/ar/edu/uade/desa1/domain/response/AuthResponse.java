@@ -6,9 +6,15 @@ public class AuthResponse {
     private boolean success;
     private String token;
 
-    public AuthResponse(boolean success, String token) {
+    private Boolean active;
+
+    private String status;
+
+    public AuthResponse(boolean success, String token, Boolean active, String status) {
         this.success = success;
         this.token = token;
+        this.active = active;
+        this.status = status;
     }
 
     public boolean isSuccess() {
@@ -17,6 +23,14 @@ public class AuthResponse {
 
     public String getToken() {
         return token;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public void setSuccess(boolean success) {

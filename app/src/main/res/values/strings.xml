@@ -2,4 +2,6 @@
     <string name="app_name">Projecto Desarrollo Aplicaciones 1 Android Nativo</string>
     <string name="navigation_drawer_open">Abrir menú de navegación</string>
     <string name="navigation_drawer_close">Cerrar menú de navegación</string>
+    <string name="role_deliveryman">Repartidor</string>
+    <string name="role_user">Usuario</string>
 </resources>

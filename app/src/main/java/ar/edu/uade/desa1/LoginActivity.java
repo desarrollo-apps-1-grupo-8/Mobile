@@ -61,6 +61,12 @@ LoginActivity extends AppCompatActivity {
                     startActivity(new Intent(LoginActivity.this, RoutesActivity.class)); //Redireccion a Routes Activity
                     finish();
                 } else {
+                    if (!result.getActive() && "NEEDS_VERIFICATION".equals(result.getStatus())) {
+                        Intent intent = new Intent(LoginActivity.this, OtpActivity.class);
+                        intent.putExtra("email", email);
+                        startActivity(intent);
+                        finish();
+                    }
                     Toast.makeText(this, "Login fallido", Toast.LENGTH_SHORT).show();
                 }
             });

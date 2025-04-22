@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Clase encargada del manejo seguro de tokens de autenticación utilizando EncryptedSharedPreferences
+ * autenticación utilizando EncryptedSharedPreferences
  */
 @Singleton
 public class TokenManager {
