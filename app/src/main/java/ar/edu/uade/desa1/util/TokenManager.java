@@ -106,6 +106,28 @@ public class TokenManager {
         }
     }
 
+    public String getUserFirstNameFromToken() {
+        try {
+            String token = getAccessToken();
+            if (token == null) return null;
+
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+
+            String[] parts = token.split("\\.");
+            if (parts.length != 3) return null;
+
+            String payload = new String(android.util.Base64.decode(parts[1], android.util.Base64.URL_SAFE));
+            JSONObject json = new JSONObject(payload);
+
+            return json.getString("first_name");
+        } catch (Exception e) {
+            Log.e(TAG, "Error al obtener first_name del token: " + e.getMessage());
+            return null;
+        }
+    }
+
 
     public void saveToken(String accessToken, long expiryTimeInMillis) {
         encryptedPrefs.edit()

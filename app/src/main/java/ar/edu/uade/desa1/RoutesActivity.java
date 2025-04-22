@@ -1,15 +1,23 @@
 package ar.edu.uade.desa1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +39,8 @@ import retrofit2.Response;
 public class RoutesActivity extends AppCompatActivity {
 
     private LinearLayout routesContainer;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView noRoutesText;
 
@@ -60,6 +70,45 @@ public class RoutesActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(this::loadRoutes);
         
         loadRoutes();
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView usernameText = headerView.findViewById(R.id.username_text);
+        TextView roleText = headerView.findViewById(R.id.role_text);
+
+        String firstName = tokenManager.getUserFirstNameFromToken();
+        String role = tokenManager.getUserRoleFromToken();
+        usernameText.setText("Hola " + firstName + "!");
+        roleText.setText(role.toUpperCase());
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_profile) {
+                Intent intent = new Intent(this, HistoryActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_logout) {
+                tokenManager.clearToken();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        });
+
     }
     
     private void loadRoutes() {
@@ -145,6 +194,15 @@ public class RoutesActivity extends AppCompatActivity {
 
     public void reloadRoutes() {
         loadRoutes();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) { /// /burger options
+        if (item.getItemId() == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

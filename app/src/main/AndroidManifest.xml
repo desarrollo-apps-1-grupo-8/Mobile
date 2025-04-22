@@ -18,17 +18,20 @@
         android:theme="@style/Theme.ProjectoDesarrolloAplicaciones1AndroidNativo"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity android:name=".OtpActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".OtpActivity"
+            android:label= "Recibir OTP"
+            />
         <activity android:name=".RoutesActivity"
-            android:label= "Mis Rutas"
+            android:label= "Mis rutas"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HistoryActivity" />
+        <activity android:name=".HistoryActivity"
+            android:label= "Mis rutas finalizadas"
+            />
 
         <activity
             android:name=".LoginActivity"
