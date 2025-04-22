@@ -24,6 +24,7 @@ import ar.edu.uade.desa1.domain.RouteStatusEnum;
 import ar.edu.uade.desa1.domain.request.UpdateRouteStatusRequest;
 import ar.edu.uade.desa1.domain.response.DeliveryRouteResponse;
 import ar.edu.uade.desa1.domain.response.DeliveryRouteResponseWithUserInfo;
+import ar.edu.uade.desa1.util.RoleEnum;
 import ar.edu.uade.desa1.util.TokenManager;
 import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
@@ -64,6 +65,7 @@ public class RouteCardFragment extends Fragment {
         Button actionButton = view.findViewById(R.id.actionButton);
 
         if (getArguments() != null) {
+            String role = tokenManager.getUserRoleFromToken();
             route = (DeliveryRouteResponseWithUserInfo) getArguments().getSerializable("route");
 
             titleText.setText("Desde: " + route.getOrigin());
@@ -73,21 +75,26 @@ public class RouteCardFragment extends Fragment {
             String statusSpanish = getSpanishStatus(status);
             statusText.setText("Estado: " + statusSpanish);
 
-            String formattedDate = formatDate(route.getUpdatedAt());
-            footerText.setText("Cliente: " + route.getUserInfo() + "\nFecha: " + formattedDate);
+            boolean isRepartidor = RoleEnum.REPARTIDOR == RoleEnum.valueOf(role);
 
-            if (AVAILABLE.equalsIgnoreCase(status)) {
-                actionButton.setText("Asignarme ruta");
-                actionButton.setVisibility(View.VISIBLE);
-                actionButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), android.R.color.holo_green_light));
-                actionButton.setTextColor(Color.WHITE);
-                actionButton.setOnClickListener(v -> updateRouteStatus("IN_PROGRESS"));
-            } else if (IN_PROGRESS.equalsIgnoreCase(status)) {
-                actionButton.setText("Finalizar ruta");
-                actionButton.setVisibility(View.VISIBLE);
-                actionButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), android.R.color.holo_red_light));
-                actionButton.setTextColor(Color.WHITE);
-                actionButton.setOnClickListener(v -> updateRouteStatus("COMPLETED"));
+            String formattedDate = formatDate(route.getUpdatedAt());
+            footerText.setText(isRepartidor ? "Cliente: " + route.getUserInfo() + "\nFecha: " + formattedDate : "Fecha: " + formattedDate);
+
+
+            if (isRepartidor) {
+                if (AVAILABLE.equalsIgnoreCase(status)) {
+                    actionButton.setText("Asignarme ruta");
+                    actionButton.setVisibility(View.VISIBLE);
+                    actionButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), android.R.color.holo_green_light));
+                    actionButton.setTextColor(Color.WHITE);
+                    actionButton.setOnClickListener(v -> updateRouteStatus("IN_PROGRESS"));
+                } else if (IN_PROGRESS.equalsIgnoreCase(status)) {
+                    actionButton.setText("Finalizar ruta");
+                    actionButton.setVisibility(View.VISIBLE);
+                    actionButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), android.R.color.holo_red_light));
+                    actionButton.setTextColor(Color.WHITE);
+                    actionButton.setOnClickListener(v -> updateRouteStatus("COMPLETED"));
+                }
             }
         }
 
