@@ -122,13 +122,11 @@ public class AuthRepository {
         });
     }
     
-    // Interface for reset password callbacks
     public interface OnResetPasswordCallback {
         void onSuccess();
         void onError(String errorMessage);
     }
     
-    // Reset password method
     public void resetPassword(PasswordResetRequest request, OnResetPasswordCallback callback) {
         authApiService.resetPassword(request).enqueue(new Callback<Void>() {
             @Override

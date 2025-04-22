@@ -160,7 +160,6 @@ public class RegisterActivity extends AppCompatActivity {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString();
 
-        // Obtener el rol seleccionado del spinner
         String selectedRole = spinnerRole.getSelectedItem().toString();
         long roleId = roleMap.get(selectedRole);
 
@@ -183,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
                     intent.putExtra("recover", false);
                     startActivity(intent);
                     finish();
-                }, 2000); // Espera 2 segundos para que el usuario vea el Toast
+                }, 2000);
             }
 
             @Override

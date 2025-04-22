@@ -46,7 +46,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_reset_password);
         
-        // Initialize views
         passwordInput = findViewById(R.id.passwordInput);
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         passwordLayout = findViewById(R.id.passwordLayout);
@@ -54,7 +53,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
         resetButton = findViewById(R.id.resetButton);
         progressBar = findViewById(R.id.progressBar);
         
-        // Obtener email del intent
         if (getIntent().hasExtra("email")) {
             email = getIntent().getStringExtra("email");
             
@@ -64,7 +62,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 return;
             }
         } else {
-            // Si no se proporciona email, mostrar error y volver al login
             Toast.makeText(this, "Error: No se pudo identificar el usuario", Toast.LENGTH_LONG).show();
             navigateToLogin();
             return;
@@ -74,15 +71,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
     
     private void resetPassword() {
-        // Clear previous errors
         passwordLayout.setError(null);
         confirmPasswordLayout.setError(null);
         
-        // Get input values
         String password = passwordInput.getText().toString().trim();
         String confirmPassword = confirmPasswordInput.getText().toString().trim();
         
-        // Validate input
         if (TextUtils.isEmpty(password)) {
             passwordLayout.setError("La contraseña no puede estar vacía");
             return;
@@ -98,13 +92,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
             return;
         }
         
-        // Show progress
         showLoading(true);
         
-        // Create request with email instead of token
         PasswordResetRequest request = new PasswordResetRequest(email, password);
         
-        // Call API
         authRepository.resetPassword(request, new AuthRepository.OnResetPasswordCallback() {
             @Override
             public void onSuccess() {

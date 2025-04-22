@@ -137,7 +137,6 @@ public class TokenManager {
     }
 
     public void saveToken(String accessToken) {
-        // Establecemos un tiempo de expiración de 1 hora desde ahora
         saveToken(accessToken, System.currentTimeMillis() + (3600 * 1000));
     }
 

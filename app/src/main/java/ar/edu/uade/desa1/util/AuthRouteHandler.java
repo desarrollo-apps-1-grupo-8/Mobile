@@ -26,7 +26,6 @@ public class AuthRouteHandler {
     
     public boolean checkAuthentication(Activity activity, Class<?> loginActivityClass) {
         if (!tokenManager.isLoggedIn()) {
-            // El usuario no está autenticado, redirigir al login
             Toast.makeText(context, "Debes iniciar sesión para acceder", Toast.LENGTH_SHORT).show();
             
             Intent intent = new Intent(activity, loginActivityClass);

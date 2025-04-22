@@ -76,7 +76,6 @@ public class OtpActivity extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         isRecover = getIntent().getBooleanExtra("recover", false);
 
-        // Enviar código de verificación automáticamente al iniciar la actividad
         sendInitialVerificationCode();
 
         btnVerifyOtp.setOnClickListener(v -> {
@@ -192,7 +191,6 @@ public class OtpActivity extends AppCompatActivity {
                     tvOtpInstruction.setText("¡OTP verificado correctamente!");
                     tvOtpInstruction.setTextColor(getColor(R.color.purple_500));
 
-                    // Redirigir a la pantalla principal
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
                         Intent intent = new Intent(OtpActivity.this, isRecover ? ResetPasswordActivity.class : LoginActivity.class);
                         if (isRecover) {
@@ -201,7 +199,7 @@ public class OtpActivity extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
-                    }, 1500); // Delay opcional para que vea el mensaje
+                    }, 1500);
                 } else {
                     showOtpError(response.getMessage());
                 }

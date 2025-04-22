@@ -152,7 +152,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) { /// /burger options
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             drawerLayout.openDrawer(GravityCompat.START);
             return true;
