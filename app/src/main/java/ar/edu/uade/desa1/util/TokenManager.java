@@ -86,6 +86,7 @@ public class TokenManager {
         try {
             String token = getAccessToken();
             if (token == null) return null;
+<<<<<<< Updated upstream
 
             if (token.startsWith("Bearer ")) {
                 token = token.substring(7);
@@ -103,7 +104,25 @@ public class TokenManager {
             return null;
         }
     }
+=======
+>>>>>>> Stashed changes
 
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+
+            String[] parts = token.split("\\.");
+            if (parts.length != 3) return null;
+
+            String payload = new String(android.util.Base64.decode(parts[1], android.util.Base64.URL_SAFE));
+            JSONObject json = new JSONObject(payload);
+
+            return json.getString("role");
+        } catch (Exception e) {
+            Log.e(TAG, "Error al obtener role del token: " + e.getMessage());
+            return null;
+        }
+    }
     public void saveToken(String accessToken, long expiryTimeInMillis) {
         encryptedPrefs.edit()
                 .putString(KEY_ACCESS_TOKEN, accessToken)

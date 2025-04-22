@@ -15,6 +15,7 @@ import retrofit2.http.Path;
 public interface RoutesApiService {
 
     @GET("/api/v1/routes/history/{userId}")
+<<<<<<< Updated upstream
     Call<List<DeliveryRouteResponse>> getCompletedRoutesByUserId(@Path("userId") long userId);
 
     @POST("/api/v1/routes/update-status")
@@ -28,4 +29,13 @@ public interface RoutesApiService {
 
     @GET("/api/v1/routes/{id}")
     Call<DeliveryRouteResponse> getRouteById(@Path("id") long routeId);
+=======
+    Call<List<DeliveryRouteResponseWithUserInfo>> getCompletedRoutesByUserId(@Path("userId") long userId);
+
+    @GET("/api/v1/routes/user/{userId}")
+    Call<List<DeliveryRouteResponseWithUserInfo>> getRoutesByUserId(@Path("userId") long userId);
+
+    @GET("/api/v1/routes")
+    Call<List<DeliveryRouteResponseWithUserInfo>> getAllRoutes();
+>>>>>>> Stashed changes
 }
