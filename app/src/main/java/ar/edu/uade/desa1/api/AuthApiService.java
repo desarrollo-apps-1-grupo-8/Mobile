@@ -30,6 +30,6 @@ public interface AuthApiService {
     @POST("/api/v1/login")
     Call<AuthResponse> login(@Body AuthLoginRequest request);
 
-    @POST("/auth/recover")
+    @POST("/api/v1/recover")
     Call<Void> recoverPassword(@Body PasswordRecoveryRequest request);
 } 
