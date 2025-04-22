@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SendVerificationCodeRequest {
-    private String email;
-    private Boolean recoverPassword;
-} 
+public class UpdateRouteStatusRequest {
+    private Long deliveryRouteId;
+    private String status;
+    private Long deliveryUserId;
+}

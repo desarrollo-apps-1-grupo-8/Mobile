@@ -1,5 +1,6 @@
 package ar.edu.uade.desa1.domain.response;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DeliveryRouteResponseWithUserInfo {
+public class DeliveryRouteResponseWithUserInfo implements Serializable {
 
     private Long id;
     private String packageInfo;
