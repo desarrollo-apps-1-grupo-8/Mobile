@@ -6,9 +6,13 @@ import javax.inject.Singleton;
 import ar.edu.uade.desa1.api.AuthApiService;
 import ar.edu.uade.desa1.domain.request.AuthLoginRequest;
 import ar.edu.uade.desa1.domain.request.AuthRegisterRequest;
-import ar.edu.uade.desa1.domain.request.VerifyEmailRequest;
+import ar.edu.uade.desa1.domain.request.SendVerificationCodeRequest;
+import ar.edu.uade.desa1.domain.request.VerifyCodeRequest;
+import ar.edu.uade.desa1.domain.request.VerifyCodeRequest;
 import ar.edu.uade.desa1.domain.response.AuthRegisterResponse;
-import ar.edu.uade.desa1.domain.response.VerifyEmailResponse;
+import ar.edu.uade.desa1.domain.response.SendVerificationCodeResponse;
+import ar.edu.uade.desa1.domain.response.VerifyCodeResponse;
+import ar.edu.uade.desa1.domain.response.VerifyCodeResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,10 +46,10 @@ public class AuthRepository {
         });
     }
 
-    public void verifyEmail(VerifyEmailRequest request, OnVerifyEmailCallback callback) {
-        authApiService.verifyEmail(request).enqueue(new Callback<VerifyEmailResponse>() {
+    public void verifyCode(VerifyCodeRequest request, OnVerifyCodeCallback callback) {
+        authApiService.verifyCode(request).enqueue(new Callback<VerifyCodeResponse>() {
             @Override
-            public void onResponse(Call<VerifyEmailResponse> call, Response<VerifyEmailResponse> response) {
+            public void onResponse(Call<VerifyCodeResponse> call, Response<VerifyCodeResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
@@ -54,7 +58,7 @@ public class AuthRepository {
             }
 
             @Override
-            public void onFailure(Call<VerifyEmailResponse> call, Throwable t) {
+            public void onFailure(Call<VerifyCodeResponse> call, Throwable t) {
                 callback.onError("Error de conexión: " + t.getMessage());
             }
         });
@@ -65,9 +69,32 @@ public class AuthRepository {
         void onError(String errorMessage);
     }
 
-    public interface OnVerifyEmailCallback {
-        void onSuccess(VerifyEmailResponse response);
+    public interface OnVerifyCodeCallback {
+        void onSuccess(VerifyCodeResponse response);
         void onError(String errorMessage);
+    }
+
+    public interface OnSendVerificationCodeCallback {
+        void onSuccess(SendVerificationCodeResponse response);
+        void onError(String errorMessage);
+    }
+
+    public void sendVerificationCode(SendVerificationCodeRequest request, OnSendVerificationCodeCallback callback) {
+        authApiService.sendVerificationCode(request).enqueue(new Callback<SendVerificationCodeResponse>() {
+            @Override
+            public void onResponse(Call<SendVerificationCodeResponse> call, Response<SendVerificationCodeResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Error al enviar el código: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SendVerificationCodeResponse> call, Throwable t) {
+                callback.onError("Error de conexión: " + t.getMessage());
+            }
+        });
     }
 
     //Login
@@ -81,13 +108,13 @@ public class AuthRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onResult(response.body());
                 } else {
-                    callback.onResult(new AuthResponse(false, null));
+                    callback.onResult(new AuthResponse(false, null, false, ""));
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                callback.onResult(new AuthResponse(false, null));
+                callback.onResult(new AuthResponse(false, null, false, ""));
             }
         });
     }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VerifyEmailResponse {
+public class VerifyCodeResponse {
     private boolean success;
     private String message;
 } 
