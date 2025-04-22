@@ -1,6 +1,7 @@
 package ar.edu.uade.desa1;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -43,11 +44,12 @@ public class OtpActivity extends AppCompatActivity {
     private TextInputLayout otpInputLayout;
     private MaterialTextView tvOtpInstruction;
     private View cardView;
-    
+    private Boolean isRecover;
     private String email;
     private CountDownTimer resendTimer;
     private static final long RESEND_DELAY = 60000; // 60 segundos en milisegundos
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,7 @@ public class OtpActivity extends AppCompatActivity {
         cardView = (View) otpInputLayout.getParent().getParent();
 
         email = getIntent().getStringExtra("email");
+        isRecover = getIntent().getBooleanExtra("recover", false);
 
         // Enviar código de verificación automáticamente al iniciar la actividad
         sendInitialVerificationCode();
@@ -101,8 +104,8 @@ public class OtpActivity extends AppCompatActivity {
         clearOtpError();
         tvOtpInstruction.setText("Enviando código de verificación...");
         tvOtpInstruction.setTextColor(getColor(R.color.text_primary));
-
-        SendVerificationCodeRequest request = new SendVerificationCodeRequest(email);
+        System.out.println("EL TYPE ESTA VINIENDO CON: " + isRecover);
+        SendVerificationCodeRequest request = new SendVerificationCodeRequest(email, isRecover);
 
         authRepository.sendVerificationCode(request, new AuthRepository.OnSendVerificationCodeCallback() {
             @Override
@@ -132,7 +135,7 @@ public class OtpActivity extends AppCompatActivity {
         showLoading(true);
         clearOtpError();
 
-        SendVerificationCodeRequest request = new SendVerificationCodeRequest(email);
+        SendVerificationCodeRequest request = new SendVerificationCodeRequest(email, isRecover);
 
         authRepository.sendVerificationCode(request, new AuthRepository.OnSendVerificationCodeCallback() {
             @Override
@@ -168,7 +171,7 @@ public class OtpActivity extends AppCompatActivity {
         showLoading(true);
         clearOtpError();
 
-        VerifyCodeRequest request = new VerifyCodeRequest(email, otp);
+        VerifyCodeRequest request = new VerifyCodeRequest(email, otp, isRecover);
 
         authRepository.verifyCode(request, new AuthRepository.OnVerifyCodeCallback() {
             @Override
@@ -182,7 +185,10 @@ public class OtpActivity extends AppCompatActivity {
 
                     // Redirigir a la pantalla principal
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        Intent intent = new Intent(OtpActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(OtpActivity.this, isRecover ? ResetPasswordActivity.class : LoginActivity.class);
+                        if (isRecover) {
+                            intent.putExtra("email", email);
+                        }
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
