@@ -111,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString();
 
-        long roleId = 1;
+        long roleId = 2;
 
         AuthRegisterRequest request = new AuthRegisterRequest(
                 email, password, roleId, firstName, lastName, dni, phone
