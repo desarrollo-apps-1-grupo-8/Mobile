@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import ar.edu.uade.desa1.domain.request.PasswordResetRequest;
 import ar.edu.uade.desa1.repository.AuthRepository;
+import ar.edu.uade.desa1.util.NetworkUtils;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -36,6 +37,13 @@ public class ResetPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!NetworkUtils.isConnected(this)) {
+            startActivity(new Intent(this, NoInternetActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_reset_password);
         
         // Initialize views

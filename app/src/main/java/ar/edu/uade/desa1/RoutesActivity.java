@@ -28,6 +28,7 @@ import ar.edu.uade.desa1.api.RoutesApiService;
 import ar.edu.uade.desa1.domain.response.DeliveryRouteResponseWithUserInfo;
 import ar.edu.uade.desa1.fragment.RouteCardFragment;
 import ar.edu.uade.desa1.util.AuthRouteHandler;
+import ar.edu.uade.desa1.util.NetworkUtils;
 import ar.edu.uade.desa1.util.RoleEnum;
 import ar.edu.uade.desa1.util.TokenManager;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -55,7 +56,14 @@ public class RoutesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        if (!NetworkUtils.isConnected(this)) {
+            startActivity(new Intent(this, NoInternetActivity.class));
+            finish();
+            return;
+        }
 
         if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) { //
             return;

@@ -21,6 +21,9 @@
         <activity android:name=".OtpActivity"
             android:label= "Recibir OTP"
             />
+        <activity android:name=".NoInternetActivity"
+            android:label= "Sin conexión"
+            />
         <activity android:name=".RoutesActivity"
             android:label= "Mis rutas"
             android:exported="true">
