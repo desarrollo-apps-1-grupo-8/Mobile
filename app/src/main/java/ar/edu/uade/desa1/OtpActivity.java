@@ -3,12 +3,14 @@ package ar.edu.uade.desa1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,9 +20,14 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import javax.inject.Inject;
+
+import ar.edu.uade.desa1.domain.request.SendVerificationCodeRequest;
+import ar.edu.uade.desa1.domain.request.VerifyCodeRequest;
+import ar.edu.uade.desa1.domain.response.SendVerificationCodeResponse;
+import ar.edu.uade.desa1.domain.response.VerifyCodeResponse;
 import ar.edu.uade.desa1.repository.AuthRepository;
-import ar.edu.uade.desa1.domain.request.VerifyEmailRequest;
-import ar.edu.uade.desa1.domain.response.VerifyEmailResponse;
+import ar.edu.uade.desa1.domain.request.VerifyCodeRequest;
+import ar.edu.uade.desa1.domain.response.VerifyCodeResponse;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -31,12 +38,15 @@ public class OtpActivity extends AppCompatActivity {
 
     private TextInputEditText edtOtp;
     private MaterialButton btnVerifyOtp;
+    private MaterialButton btnResendCode;
     private ProgressBar progressBarOtp;
     private TextInputLayout otpInputLayout;
     private MaterialTextView tvOtpInstruction;
     private View cardView;
     
     private String email;
+    private CountDownTimer resendTimer;
+    private static final long RESEND_DELAY = 60000; // 60 segundos en milisegundos
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +56,16 @@ public class OtpActivity extends AppCompatActivity {
 
         edtOtp = findViewById(R.id.edtOtp);
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
+        btnResendCode = findViewById(R.id.btnResendCode);
         progressBarOtp = findViewById(R.id.progressBarOtp);
         otpInputLayout = findViewById(R.id.otpInputLayout);
         tvOtpInstruction = findViewById(R.id.tvOtpInstruction);
-        cardView = (View) otpInputLayout.getParent().getParent(); // CardView
+        cardView = (View) otpInputLayout.getParent().getParent();
 
         email = getIntent().getStringExtra("email");
+
+        // Enviar código de verificación automáticamente al iniciar la actividad
+        sendInitialVerificationCode();
 
         btnVerifyOtp.setOnClickListener(v -> {
             String otp = edtOtp.getText() != null ? edtOtp.getText().toString().trim() : "";
@@ -61,17 +75,104 @@ public class OtpActivity extends AppCompatActivity {
             }
             verifyOtp(otp);
         });
+
+        btnResendCode.setOnClickListener(v -> resendVerificationCode());
+    }
+
+    private void startResendTimer() {
+        btnResendCode.setEnabled(false);
+        resendTimer = new CountDownTimer(RESEND_DELAY, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long seconds = millisUntilFinished / 1000;
+                btnResendCode.setText(String.format("Reenviar código (%d)", seconds));
+            }
+
+            @Override
+            public void onFinish() {
+                btnResendCode.setEnabled(true);
+                btnResendCode.setText("Reenviar código");
+            }
+        }.start();
+    }
+
+    private void sendInitialVerificationCode() {
+        showLoading(true);
+        clearOtpError();
+        tvOtpInstruction.setText("Enviando código de verificación...");
+        tvOtpInstruction.setTextColor(getColor(R.color.text_primary));
+
+        SendVerificationCodeRequest request = new SendVerificationCodeRequest(email);
+
+        authRepository.sendVerificationCode(request, new AuthRepository.OnSendVerificationCodeCallback() {
+            @Override
+            public void onSuccess(SendVerificationCodeResponse response) {
+                showLoading(false);
+                if (response.isSuccess()) {
+                    tvOtpInstruction.setText("Verificá tu identidad");
+                    tvOtpInstruction.setTextColor(getColor(R.color.text_primary));
+                    Toast.makeText(OtpActivity.this, 
+                        "Se ha enviado un código de verificación a tu email", 
+                        Toast.LENGTH_LONG).show();
+                    startResendTimer();
+                } else {
+                    showOtpError(response.getMessage());
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                showLoading(false);
+                showOtpError(errorMessage);
+            }
+        });
+    }
+
+    private void resendVerificationCode() {
+        showLoading(true);
+        clearOtpError();
+
+        SendVerificationCodeRequest request = new SendVerificationCodeRequest(email);
+
+        authRepository.sendVerificationCode(request, new AuthRepository.OnSendVerificationCodeCallback() {
+            @Override
+            public void onSuccess(SendVerificationCodeResponse response) {
+                showLoading(false);
+                if (response.isSuccess()) {
+                    Toast.makeText(OtpActivity.this, 
+                        "Se ha enviado un nuevo código de verificación a tu email", 
+                        Toast.LENGTH_LONG).show();
+                    startResendTimer();
+                } else {
+                    showOtpError(response.getMessage());
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                showLoading(false);
+                showOtpError(errorMessage);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (resendTimer != null) {
+            resendTimer.cancel();
+        }
     }
 
     private void verifyOtp(String otp) {
         showLoading(true);
         clearOtpError();
 
-        VerifyEmailRequest request = new VerifyEmailRequest(email, otp);
+        VerifyCodeRequest request = new VerifyCodeRequest(email, otp);
 
-        authRepository.verifyEmail(request, new AuthRepository.OnVerifyEmailCallback() {
+        authRepository.verifyCode(request, new AuthRepository.OnVerifyCodeCallback() {
             @Override
-            public void onSuccess(VerifyEmailResponse response) {
+            public void onSuccess(VerifyCodeResponse response) {
                 showLoading(false);
                 if (response.isSuccess()) {
                     otpInputLayout.setBoxStrokeColor(getColor(R.color.purple_500));
@@ -86,8 +187,7 @@ public class OtpActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }, 1500); // Delay opcional para que vea el mensaje
-            } else {
-
+                } else {
                     showOtpError(response.getMessage());
                 }
             }
