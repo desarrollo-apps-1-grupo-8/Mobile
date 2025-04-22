@@ -111,6 +111,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"/>
+
+            <TextView
+                android:id="@+id/text_login_redirect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¿Ya tenés cuenta? Iniciá sesión"
+                android:textColor="@color/teal_700"
+                android:textSize="14sp"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="16dp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
         <ProgressBar
