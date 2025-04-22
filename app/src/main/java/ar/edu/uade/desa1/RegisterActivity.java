@@ -5,12 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -25,6 +30,10 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText edtFirstName, edtLastName, edtDni, edtPhone, edtEmail, edtPassword, edtConfirmPassword;
     private Button btnRegister;
     private ProgressBar progressBar;
+    private Spinner spinnerRole;
+
+    // Mapeo de roles a sus IDs
+    private final Map<String, Long> roleMap = new HashMap<>();
 
     @Inject
     AuthRepository authRepository;
@@ -35,7 +44,11 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         setTitle("Registro de Usuario");
 
+        roleMap.put(getString(R.string.role_deliveryman), 1L);
+        roleMap.put(getString(R.string.role_user), 2L);
+
         initViews();
+        setupRoleSpinner();
         setupListeners();
     }
 
@@ -46,9 +59,25 @@ public class RegisterActivity extends AppCompatActivity {
         edtPhone = findViewById(R.id.edtPhone);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
+        edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
         btnRegister = findViewById(R.id.btnRegister);
         progressBar = findViewById(R.id.progressBar);
-        edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
+        spinnerRole = findViewById(R.id.spinnerRole);
+    }
+
+    private void setupRoleSpinner() {
+        String[] roles = {
+            getString(R.string.role_deliveryman),
+            getString(R.string.role_user)
+        };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+            this,
+            android.R.layout.simple_spinner_item,
+            roles
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRole.setAdapter(adapter);
     }
 
     private void setupListeners() {
@@ -111,7 +140,9 @@ public class RegisterActivity extends AppCompatActivity {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString();
 
-        long roleId = 2;
+        // Obtener el rol seleccionado del spinner
+        String selectedRole = spinnerRole.getSelectedItem().toString();
+        long roleId = roleMap.get(selectedRole);
 
         AuthRegisterRequest request = new AuthRegisterRequest(
                 email, password, roleId, firstName, lastName, dni, phone
