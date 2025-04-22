@@ -34,6 +34,7 @@
             android:name=".LoginActivity"
             android:label="Iniciar Sesión" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".ResetPasswordActivity" />
         <activity
             android:name=".ForgotPasswordActivity"
             android:label="Recuperar Contraseña" />

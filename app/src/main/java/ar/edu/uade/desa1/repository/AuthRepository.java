@@ -6,12 +6,11 @@ import javax.inject.Singleton;
 import ar.edu.uade.desa1.api.AuthApiService;
 import ar.edu.uade.desa1.domain.request.AuthLoginRequest;
 import ar.edu.uade.desa1.domain.request.AuthRegisterRequest;
+import ar.edu.uade.desa1.domain.request.PasswordResetRequest;
 import ar.edu.uade.desa1.domain.request.SendVerificationCodeRequest;
-import ar.edu.uade.desa1.domain.request.VerifyCodeRequest;
 import ar.edu.uade.desa1.domain.request.VerifyCodeRequest;
 import ar.edu.uade.desa1.domain.response.AuthRegisterResponse;
 import ar.edu.uade.desa1.domain.response.SendVerificationCodeResponse;
-import ar.edu.uade.desa1.domain.response.VerifyCodeResponse;
 import ar.edu.uade.desa1.domain.response.VerifyCodeResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,6 +77,10 @@ public class AuthRepository {
         void onSuccess(SendVerificationCodeResponse response);
         void onError(String errorMessage);
     }
+    
+    public interface AuthResultCallback {
+        void onResult(AuthResponse response);
+    }
 
     public void sendVerificationCode(SendVerificationCodeRequest request, OnSendVerificationCodeCallback callback) {
         authApiService.sendVerificationCode(request).enqueue(new Callback<SendVerificationCodeResponse>() {
@@ -118,5 +121,29 @@ public class AuthRepository {
             }
         });
     }
-
+    
+    // Interface for reset password callbacks
+    public interface OnResetPasswordCallback {
+        void onSuccess();
+        void onError(String errorMessage);
+    }
+    
+    // Reset password method
+    public void resetPassword(PasswordResetRequest request, OnResetPasswordCallback callback) {
+        authApiService.resetPassword(request).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError("Error al resetear la contraseña: " + response.message());
+                }
+            }
+            
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onError("Error de conexión: " + t.getMessage());
+            }
+        });
+    }
 } 

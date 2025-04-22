@@ -160,6 +160,7 @@ public class RegisterActivity extends AppCompatActivity {
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     Intent intent = new Intent(RegisterActivity.this, OtpActivity.class);
                     intent.putExtra("email", email);
+                    intent.putExtra("recover", false);
                     startActivity(intent);
                     finish();
                 }, 2000); // Espera 2 segundos para que el usuario vea el Toast
