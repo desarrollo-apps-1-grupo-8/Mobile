@@ -29,8 +29,12 @@
         </activity>
         <activity android:name=".HistoryActivity" />
 
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="Iniciar Sesión" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".ForgotPasswordActivity" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:label="Recuperar Contraseña" />
     </application>
 </manifest>
