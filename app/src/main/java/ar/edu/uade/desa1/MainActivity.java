@@ -42,9 +42,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
-
-
         // Nombre de usuario en el header
         View headerView = navigationView.getHeaderView(0);
         TextView usernameText = headerView.findViewById(R.id.username_text);
