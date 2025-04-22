@@ -43,7 +43,7 @@ public class OtpActivity extends AppCompatActivity {
     private TextInputLayout otpInputLayout;
     private MaterialTextView tvOtpInstruction;
     private View cardView;
-    private String type;
+    
     private String email;
     private CountDownTimer resendTimer;
     private static final long RESEND_DELAY = 60000; // 60 segundos en milisegundos
@@ -63,7 +63,6 @@ public class OtpActivity extends AppCompatActivity {
         cardView = (View) otpInputLayout.getParent().getParent();
 
         email = getIntent().getStringExtra("email");
-        type = getIntent().getStringExtra("type");
 
         // Enviar código de verificación automáticamente al iniciar la actividad
         sendInitialVerificationCode();
@@ -183,7 +182,7 @@ public class OtpActivity extends AppCompatActivity {
 
                     // Redirigir a la pantalla principal
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        Intent intent = new Intent(OtpActivity.this, type == "recover"? ResetPasswordActivity.class : LoginActivity.class);
+                        Intent intent = new Intent(OtpActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();

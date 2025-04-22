@@ -1,12 +1,9 @@
 package ar.edu.uade.desa1;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ar.edu.uade.desa1.api.AuthApiService;
@@ -50,10 +47,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(ForgotPasswordActivity.this, "Revisá tu email (o consola)", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(ForgotPasswordActivity.this, OtpActivity.class);
-                        intent.putExtra("type", "recover");
-                        startActivity(intent);
-                        finish();
                     } else {
                         Toast.makeText(ForgotPasswordActivity.this, "Error al recuperar contraseña", Toast.LENGTH_SHORT).show();
                     }
@@ -65,10 +58,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 }
             });
         });
-
     }
-
-
 
 
 }
