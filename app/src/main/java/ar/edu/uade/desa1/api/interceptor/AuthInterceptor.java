@@ -27,11 +27,11 @@ public class AuthInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request originalRequest = chain.request();
-        
+
         if (!tokenManager.isLoggedIn() || originalRequest.header("Authorization") != null) {
             return chain.proceed(originalRequest);
         }
-        
+
         String token = tokenManager.getFormattedAccessToken();
         if (token != null) {
             Request authorizedRequest = originalRequest.newBuilder()
@@ -39,7 +39,7 @@ public class AuthInterceptor implements Interceptor {
                     .build();
             return chain.proceed(authorizedRequest);
         }
-        
+
         return chain.proceed(originalRequest);
     }
-} 
+}

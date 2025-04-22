@@ -16,7 +16,6 @@ import javax.inject.Inject;
 
 import ar.edu.uade.desa1.api.RoutesApiService;
 import ar.edu.uade.desa1.domain.response.DeliveryRouteResponse;
-import ar.edu.uade.desa1.domain.response.DeliveryRouteResponseWithUserInfo;
 import ar.edu.uade.desa1.fragment.HistoryRouteCardFragment;
 import ar.edu.uade.desa1.util.AuthRouteHandler;
 import ar.edu.uade.desa1.util.TokenManager;
@@ -43,7 +42,7 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) { //
+        if (!authRouteHandler.checkAuthentication(this, LoginActivity.class)) {
             return;
         }
 
@@ -54,35 +53,45 @@ public class HistoryActivity extends AppCompatActivity {
         long userId =  tokenManager.getUserIdFromToken();
 
         routesApiService.getCompletedRoutesByUserId(userId)
-                .enqueue(new Callback<List<DeliveryRouteResponseWithUserInfo>>() {
+                .enqueue(new Callback<List<DeliveryRouteResponse>>() {
                     @Override
-                    public void onResponse(Call<List<DeliveryRouteResponseWithUserInfo>> call, Response<List<DeliveryRouteResponseWithUserInfo>> response) {
+                    public void onResponse(Call<List<DeliveryRouteResponse>> call, Response<List<DeliveryRouteResponse>> response) {
+                        if (isFinishing() || isDestroyed())
+                            return; // Verifica si la actividad sigue activa
+
+                        Log.d("DEBUG", "Código de respuesta: " + response.code());
+                        Log.d("DEBUG", "Body recibido: " + response.body());
                         if (response.isSuccessful() && response.body() != null) {
                             TextView noRoutesText = findViewById(R.id.noRoutesText);
-                            List<DeliveryRouteResponseWithUserInfo> rutas = response.body();
+                            List<DeliveryRouteResponse> rutas = response.body();
 
                             if (rutas.isEmpty()) {
                                 noRoutesText.setVisibility(View.VISIBLE);
                             } else {
                                 noRoutesText.setVisibility(View.GONE);
-                                for (DeliveryRouteResponseWithUserInfo route : rutas) {
-                                    addRouteCard(route);
+                                for (DeliveryRouteResponse route : rutas) {
+                                    addRouteCard(route, userRole);
                                 }
                             }
-
+                        } else {
+                            Toast.makeText(HistoryActivity.this, "Error al obtener rutas", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<DeliveryRouteResponseWithUserInfo>> call, Throwable t) {
+                    public void onFailure(Call<List<DeliveryRouteResponse>> call, Throwable t) {
+                        if (isFinishing() || isDestroyed())
+                            return; // Verifica si la actividad sigue activa
+
+                        Log.e("DEBUG", "Error en la llamada Retrofit: " + t.getMessage(), t);
                         Log.e("HistoryActivity", "Error en Retrofit", t);
                         Toast.makeText(HistoryActivity.this, "Fallo al conectar con el servidor", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void addRouteCard(DeliveryRouteResponseWithUserInfo route) {
-        Fragment fragment = HistoryRouteCardFragment.newInstance(route);
+    private void addRouteCard(DeliveryRouteResponse route, String userRole) {
+        Fragment fragment = HistoryRouteCardFragment.newInstance(route, userRole);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.routesContainer, fragment)

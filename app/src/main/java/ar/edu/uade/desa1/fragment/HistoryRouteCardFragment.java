@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import ar.edu.uade.desa1.R;
@@ -23,8 +23,10 @@ public class HistoryRouteCardFragment extends Fragment {
     private static final String ARG_UPDATED_AT_DATE = "updatedAt";
     public static final String ARG_CLIENT = "client";
 
+    private TextView statusTextView;
+    private View cambiarEstadoBtn;
 
-    public static HistoryRouteCardFragment newInstance(DeliveryRouteResponseWithUserInfo route) {
+    public static HistoryRouteCardFragment newInstance(DeliveryRouteResponse route, String userRole) {
         HistoryRouteCardFragment fragment = new HistoryRouteCardFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PACKAGE, route.getPackageInfo());
@@ -62,5 +64,4 @@ public class HistoryRouteCardFragment extends Fragment {
 
         return view;
     }
-
 }

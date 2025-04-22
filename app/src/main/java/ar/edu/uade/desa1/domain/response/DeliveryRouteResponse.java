@@ -19,5 +19,6 @@ public class DeliveryRouteResponse {
     private Long deliveryUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String userInfo;
 }
 

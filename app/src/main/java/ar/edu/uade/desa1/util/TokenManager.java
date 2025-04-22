@@ -47,7 +47,6 @@ public class TokenManager {
                     .setKeyGenParameterSpec(spec)
                     .build();
 
-
             this.encryptedPrefs = EncryptedSharedPreferences.create(
                     context,
                     PREF_FILE_NAME,
@@ -83,6 +82,27 @@ public class TokenManager {
         }
     }
 
+    public String getUserRoleFromToken() {
+        try {
+            String token = getAccessToken();
+            if (token == null) return null;
+
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+
+            String[] parts = token.split("\\.");
+            if (parts.length != 3) return null;
+
+            String payload = new String(android.util.Base64.decode(parts[1], android.util.Base64.URL_SAFE));
+            JSONObject json = new JSONObject(payload);
+
+            return json.getString("role");
+        } catch (Exception e) {
+            Log.e(TAG, "Error al obtener rol del token: " + e.getMessage());
+            return null;
+        }
+    }
 
     public void saveToken(String accessToken, long expiryTimeInMillis) {
         encryptedPrefs.edit()
