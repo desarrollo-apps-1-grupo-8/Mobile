@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import ar.edu.uade.desa1.util.NetworkUtils;
+
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     private EditText emailInput;
@@ -14,6 +16,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!NetworkUtils.isConnected(this)) {
+            startActivity(new Intent(this, NoInternetActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_forgot_password);
 
         emailInput = findViewById(R.id.email_input);

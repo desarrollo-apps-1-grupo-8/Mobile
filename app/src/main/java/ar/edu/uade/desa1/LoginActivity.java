@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import ar.edu.uade.desa1.domain.request.AuthLoginRequest;
 import ar.edu.uade.desa1.repository.AuthRepository;
+import ar.edu.uade.desa1.util.NetworkUtils;
 import ar.edu.uade.desa1.util.TokenManager;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -38,6 +39,13 @@ LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!NetworkUtils.isConnected(this)) {
+            startActivity(new Intent(this, NoInternetActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         EditText emailInput = findViewById(R.id.editTextEmail);

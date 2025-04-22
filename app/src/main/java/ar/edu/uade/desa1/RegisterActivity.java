@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import ar.edu.uade.desa1.domain.request.AuthRegisterRequest;
 import ar.edu.uade.desa1.domain.response.AuthRegisterResponse;
 import ar.edu.uade.desa1.repository.AuthRepository;
+import ar.edu.uade.desa1.util.NetworkUtils;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -41,7 +42,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        if (!NetworkUtils.isConnected(this)) {
+            startActivity(new Intent(this, NoInternetActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_register);
         setTitle("Registro de Usuario");
         TextView loginRedirect = findViewById(R.id.text_login_redirect);

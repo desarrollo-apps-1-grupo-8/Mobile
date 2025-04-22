@@ -29,6 +29,7 @@ import ar.edu.uade.desa1.domain.response.VerifyCodeResponse;
 import ar.edu.uade.desa1.repository.AuthRepository;
 import ar.edu.uade.desa1.domain.request.VerifyCodeRequest;
 import ar.edu.uade.desa1.domain.response.VerifyCodeResponse;
+import ar.edu.uade.desa1.util.NetworkUtils;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -52,7 +53,15 @@ public class OtpActivity extends AppCompatActivity {
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        if (!NetworkUtils.isConnected(this)) {
+            startActivity(new Intent(this, NoInternetActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_otp);
         setTitle("Verificación OTP");
 
