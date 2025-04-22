@@ -21,6 +21,7 @@
         <activity android:name=".OtpActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".RoutesActivity"
+            android:label= "Mis Rutas"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
